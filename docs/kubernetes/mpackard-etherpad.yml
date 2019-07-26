@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mpackard-etherpad
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mpackard-etherpad
+  template:
+    metadata:
+      labels:
+        app: mpackard-etherpad
+    spec:
+      containers:
+      - name: etherpad
+        image: etherpad/etherpad
+        ports:
+        - name: http
+          containerPort: 9001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mpackard-etherpad
+spec:
+  selector:
+    app: mpackard-etherpad
+  type: NodePort
+  ports:
+  - name: http
+    port: 9001
+    targetPort: 9001
